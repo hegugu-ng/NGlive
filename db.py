@@ -92,8 +92,7 @@ class RecorderDB:
         """
         这是使用特定条件进行查询，同时使用返回的结果在关闭前可以进行数据更新。
         """
-        Data = self.session.query(self.Table).filter_by(**dt).all()
-        return Data
+        return self.session.query(self.Table).filter_by(**dt).all()
 
     # 在__exit__方法中捕获并输出异常信息 
     def __exit__(self, exc_type, exc_value, exc_tb):
