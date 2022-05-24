@@ -36,19 +36,17 @@ def Save_list():
 
 def Load_list():
     if os.path.isfile("Transcode.tmp"):
-        f=open("Transcode.tmp","rb")
-        tclist = pickle.load(f)
-        for element in tclist:
-            TRANSCODE.put(element)
-        f.close()
+        with open("Transcode.tmp","rb") as f:
+            tclist = pickle.load(f)
+            for element in tclist:
+                TRANSCODE.put(element)
         os.remove("Transcode.tmp")
-    
+
     if os.path.isfile("Upload.tmp"):
-        f=open("Upload.tmp","rb")
-        tclist = pickle.load(f)
-        for element in tclist:
-            UPLOAD.put(element)
-        f.close()
+        with open("Upload.tmp","rb") as f:
+            tclist = pickle.load(f)
+            for element in tclist:
+                UPLOAD.put(element)
         os.remove("Upload.tmp")
 
 if __name__ == "__main__":

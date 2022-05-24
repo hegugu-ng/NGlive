@@ -45,12 +45,11 @@ class transcode:
 
         用于对ffmpeg 的输出日志进行相关切片操作
         """
-        h = int(time[0:2])
+        h = int(time[:2])
         m = int(time[3:5])
         s = int(time[6:8])
         ms = int(time[9:12])
-        ts = (h * 60 * 60) + (m * 60) + s + (ms / 1000)
-        return ts
+        return (h * 60 * 60) + (m * 60) + s + (ms / 1000)
 
     def compute_progress_and_send_progress(self,process,tasksid):
         """
@@ -61,15 +60,14 @@ class transcode:
         """
         duration = None
         while process.poll() is None:
-            line = process.stderr.readline().strip()
-            if line:    
+            if line := process.stderr.readline().strip():
                 duration_res = re.search(r'Duration: (?P<duration>\S+)', line)
                 if duration_res is not None:
                     duration = duration_res.groupdict()['duration']
                     duration = re.sub(r',', '', duration)
 
                 result = re.search(r'time=(?P<time>\S+)', line)
-                
+
                 if result is not None and duration is not None:
                     elapsed_time = result.groupdict()['time']
 
@@ -78,8 +76,7 @@ class transcode:
 
                     progress = currentTime * 100/allTime
                     progress = math.ceil(progress)
-                    if progress > 100:
-                        progress = 100
+                    progress = min(progress, 100)
                     if progress != self.pros:
                         self.sendEvent("IsTranscode",tasksid = tasksid,progress = progress)
                     self.pros = progress
@@ -140,9 +137,8 @@ class transcode:
         elif model == "ABR":
             model = f"-b:v {Bitrate}k"
             bz = f"-bufsize {bufsize}k"
-        
-        cmd  = f"ffmpeg -y -i {Origin} -vcodec {encoder} -preset {preset} {model} {bz} {OutPut}"
-        return cmd
+
+        return f"ffmpeg -y -i {Origin} -vcodec {encoder} -preset {preset} {model} {bz} {OutPut}"
 
 
     def transcode_manege(self,task):

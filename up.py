@@ -21,15 +21,14 @@ from password import cookies,bduss
 
 
 def extract_cookies(cookie):
-    cookies = dict([l.split("=", 1) for l in cookie.split("; ")])
-    return cookies
+    return dict([l.split("=", 1) for l in cookie.split("; ")])
 
 def getpwd():
     str1 = '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
     import random
     while True:
         code=''
-        for i in range(4):
+        for _ in range(4):
             num = random.randint(0,len(str1)-1)
             code += str1[num]
         return code
@@ -63,7 +62,7 @@ class up:
         self.upf(upfile ,clouldpath ,task.TaskId)
         password = getpwd()
         period=7
-        logger.debug(f"上传子任务完毕")
+        logger.debug("上传子任务完毕")
         clouldfilepath = f"{clouldpath}{Path(upfile).name}"
         shared_link = self.API.share(clouldfilepath, password=password, period=period)
         logger.info(f"分享链接{shared_link.url}，密码{password}，有效期{period}天。")

@@ -94,25 +94,25 @@ class NGlive:
         logger.debug("监听器初始化成功")
     
     def Recorder(self):
-        logger.info("正在启动录播姬")
-        Recorder__active = True
-        from initial import RecorderPath,works_path,api_port
-        cmd = f'"{RecorderPath}" run {works_path} --bind http://127.0.0.1:{api_port}'
-        self.result = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,encoding="gbk")
-        while True:
-            next_line = self.result.stdout.readline().strip()
-            return_line = next_line
-            if return_line == '' and self.result.poll() != None:
-                break
-            if return_line in [f"System.IO.IOException: Failed to bind to address http://127.0.0.1:{api_port}: address already in use.","System.Net.Sockets.SocketException (10013): 以一种访问权限不允许的方式做了一个访问套接字的尝试。","System.Net.Sockets.SocketException (10049): 在其上下文中，该请求的地址无效。"]:
-                logger.error(f"录播姬出现错误:{return_line}")
-            # if return_line in "Dispose called":
-            #     logger.warning("录播姬关闭")
-            #     Recorder__active = False
-            #     break
-        returncode = self.result.wait()
-        if returncode and Recorder__active == True :
-            logger.error(f"录播姬出现错误:{return_line}")
+       logger.info("正在启动录播姬")
+       Recorder__active = True
+       from initial import RecorderPath,works_path,api_port
+       cmd = f'"{RecorderPath}" run {works_path} --bind http://127.0.0.1:{api_port}'
+       self.result = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,encoding="gbk")
+       while True:
+           next_line = self.result.stdout.readline().strip()
+           return_line = next_line
+           if return_line == '' and self.result.poll() != None:
+               break
+           if return_line in [f"System.IO.IOException: Failed to bind to address http://127.0.0.1:{api_port}: address already in use.","System.Net.Sockets.SocketException (10013): 以一种访问权限不允许的方式做了一个访问套接字的尝试。","System.Net.Sockets.SocketException (10049): 在其上下文中，该请求的地址无效。"]:
+               logger.error(f"录播姬出现错误:{return_line}")
+           # if return_line in "Dispose called":
+           #     logger.warning("录播姬关闭")
+           #     Recorder__active = False
+           #     break
+       returncode = self.result.wait()
+       if returncode and Recorder__active:
+          logger.error(f"录播姬出现错误:{return_line}")
 
     def Upload(self):
         from taskslist import UPLOAD

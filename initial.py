@@ -2,6 +2,7 @@
 """
 这个文件实现了对于NGlive一些简单的配置。
 """
+
 import os
 from taskslist import UPLOAD,TRANSCODE
 from configparser import ConfigParser
@@ -40,11 +41,7 @@ if os.path.isabs(works_path):
 else:
     works_path = os.path.abspath(works_path)
 
-if os.path.isabs(out_path):
-    out_path = out_path
-else:
-    out_path = os.path.abspath(out_path)
-
+out_path = out_path if os.path.isabs(out_path) else os.path.abspath(out_path)
 if not os.path.isdir(out_path):
             os.makedirs(out_path)
 
